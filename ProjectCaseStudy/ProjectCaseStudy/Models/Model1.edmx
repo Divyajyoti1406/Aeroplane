@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="projectflightModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CustomerTable">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="emailid" Type="varchar" MaxLength="50" />
+          <Property Name="mobileno" Type="varchar" MaxLength="50" />
+          <Property Name="Cid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="confirm_password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="gender" Type="varchar" MaxLength="50" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="nationality" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FlightTable">
+          <Key>
+            <PropertyRef Name="FlightNo" />
+          </Key>
+          <Property Name="FlightNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="From" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartureDate" Type="date" Nullable="false" />
+          <Property Name="ArrivalDate" Type="date" Nullable="false" />
+          <Property Name="DepartureTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ArrivalTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ticketno" />
+          </Key>
+          <Property Name="Cid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartureDate" Type="date" Nullable="false" />
+          <Property Name="From" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ticketno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'projectflight.dbo.TicketCancel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TicketCancel">
+          <Key>
+            <PropertyRef Name="Cid" />
+            <PropertyRef Name="ticketno" />
+            <PropertyRef Name="DepartureDate" />
+          </Key>
+          <Property Name="Cid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ticketno" Type="int" Nullable="false" />
+          <Property Name="DepartureDate" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Reservation__Cid__164452B1">
+          <End Role="CustomerTable" Type="Self.CustomerTable" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTable">
+              <PropertyRef Name="Cid" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketCan__ticke__182C9B23">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="TicketCancel" Type="Self.TicketCancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="ticketno" />
+            </Principal>
+            <Dependent Role="TicketCancel">
+              <PropertyRef Name="ticketno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketCance__Cid__173876EA">
+          <End Role="CustomerTable" Type="Self.CustomerTable" Multiplicity="1" />
+          <End Role="TicketCancel" Type="Self.TicketCancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTable">
+              <PropertyRef Name="Cid" />
+            </Principal>
+            <Dependent Role="TicketCancel">
+              <PropertyRef Name="Cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projectflightModelStoreContainer">
+          <EntitySet Name="CustomerTable" EntityType="Self.CustomerTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FlightTable" EntityType="Self.FlightTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketCancel" EntityType="Self.TicketCancel" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TicketCancel].[Cid] AS [Cid], 
+    [TicketCancel].[ticketno] AS [ticketno], 
+    [TicketCancel].[DepartureDate] AS [DepartureDate]
+    FROM [dbo].[TicketCancel] AS [TicketCancel]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Reservation__Cid__164452B1" Association="Self.FK__Reservation__Cid__164452B1">
+            <End Role="CustomerTable" EntitySet="CustomerTable" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketCan__ticke__182C9B23" Association="Self.FK__TicketCan__ticke__182C9B23">
+            <End Role="Reservation" EntitySet="Reservation" />
+            <End Role="TicketCancel" EntitySet="TicketCancel" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketCance__Cid__173876EA" Association="Self.FK__TicketCance__Cid__173876EA">
+            <End Role="CustomerTable" EntitySet="CustomerTable" />
+            <End Role="TicketCancel" EntitySet="TicketCancel" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="projectflightModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CustomerTable">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="confirm_password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nationality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK__Reservation__Cid__164452B1" FromRole="CustomerTable" ToRole="Reservation" />
+          <NavigationProperty Name="TicketCancels" Relationship="Self.FK__TicketCance__Cid__173876EA" FromRole="CustomerTable" ToRole="TicketCancel" />
+        </EntityType>
+        <EntityType Name="FlightTable">
+          <Key>
+            <PropertyRef Name="FlightNo" />
+          </Key>
+          <Property Name="FlightNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="From" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartureDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ArrivalDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DepartureTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ArrivalTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ticketno" />
+          </Key>
+          <Property Name="Cid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartureDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="From" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ticketno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CustomerTable" Relationship="Self.FK__Reservation__Cid__164452B1" FromRole="Reservation" ToRole="CustomerTable" />
+          <NavigationProperty Name="TicketCancels" Relationship="Self.FK__TicketCan__ticke__182C9B23" FromRole="Reservation" ToRole="TicketCancel" />
+        </EntityType>
+        <EntityType Name="TicketCancel">
+          <Key>
+            <PropertyRef Name="Cid" />
+            <PropertyRef Name="ticketno" />
+            <PropertyRef Name="DepartureDate" />
+          </Key>
+          <Property Name="Cid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ticketno" Type="Int32" Nullable="false" />
+          <Property Name="DepartureDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CustomerTable" Relationship="Self.FK__TicketCance__Cid__173876EA" FromRole="TicketCancel" ToRole="CustomerTable" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK__TicketCan__ticke__182C9B23" FromRole="TicketCancel" ToRole="Reservation" />
+        </EntityType>
+        <Association Name="FK__Reservation__Cid__164452B1">
+          <End Role="CustomerTable" Type="Self.CustomerTable" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTable">
+              <PropertyRef Name="Cid" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketCance__Cid__173876EA">
+          <End Role="CustomerTable" Type="Self.CustomerTable" Multiplicity="1" />
+          <End Role="TicketCancel" Type="Self.TicketCancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTable">
+              <PropertyRef Name="Cid" />
+            </Principal>
+            <Dependent Role="TicketCancel">
+              <PropertyRef Name="Cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketCan__ticke__182C9B23">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="TicketCancel" Type="Self.TicketCancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="ticketno" />
+            </Principal>
+            <Dependent Role="TicketCancel">
+              <PropertyRef Name="ticketno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projectflightEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerTables" EntityType="Self.CustomerTable" />
+          <EntitySet Name="FlightTables" EntityType="Self.FlightTable" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservation" />
+          <EntitySet Name="TicketCancels" EntityType="Self.TicketCancel" />
+          <AssociationSet Name="FK__Reservation__Cid__164452B1" Association="Self.FK__Reservation__Cid__164452B1">
+            <End Role="CustomerTable" EntitySet="CustomerTables" />
+            <End Role="Reservation" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketCance__Cid__173876EA" Association="Self.FK__TicketCance__Cid__173876EA">
+            <End Role="CustomerTable" EntitySet="CustomerTables" />
+            <End Role="TicketCancel" EntitySet="TicketCancels" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketCan__ticke__182C9B23" Association="Self.FK__TicketCan__ticke__182C9B23">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="TicketCancel" EntitySet="TicketCancels" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="projectflightModelStoreContainer" CdmEntityContainer="projectflightEntities">
+          <EntitySetMapping Name="CustomerTables">
+            <EntityTypeMapping TypeName="projectflightModel.CustomerTable">
+              <MappingFragment StoreEntitySet="CustomerTable">
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="emailid" ColumnName="emailid" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="confirm_password" ColumnName="confirm_password" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="nationality" ColumnName="nationality" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlightTables">
+            <EntityTypeMapping TypeName="projectflightModel.FlightTable">
+              <MappingFragment StoreEntitySet="FlightTable">
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
+                <ScalarProperty Name="ArrivalDate" ColumnName="ArrivalDate" />
+                <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservations">
+            <EntityTypeMapping TypeName="projectflightModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+                <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="ticketno" ColumnName="ticketno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketCancels">
+            <EntityTypeMapping TypeName="projectflightModel.TicketCancel">
+              <MappingFragment StoreEntitySet="TicketCancel">
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+                <ScalarProperty Name="ticketno" ColumnName="ticketno" />
+                <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

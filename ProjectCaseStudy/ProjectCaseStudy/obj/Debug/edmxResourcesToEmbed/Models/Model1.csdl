@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="projectflightModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CustomerTable">
+    <Key>
+      <PropertyRef Name="Cid" />
+    </Key>
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Cid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="confirm_password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="nationality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Reservations" Relationship="Self.FK__Reservation__Cid__164452B1" FromRole="CustomerTable" ToRole="Reservation" />
+    <NavigationProperty Name="TicketCancels" Relationship="Self.FK__TicketCance__Cid__173876EA" FromRole="CustomerTable" ToRole="TicketCancel" />
+  </EntityType>
+  <EntityType Name="FlightTable">
+    <Key>
+      <PropertyRef Name="FlightNo" />
+    </Key>
+    <Property Name="FlightNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="From" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="To" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DepartureDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ArrivalDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DepartureTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="ArrivalTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reservation">
+    <Key>
+      <PropertyRef Name="ticketno" />
+    </Key>
+    <Property Name="Cid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DepartureDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="From" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="To" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ticketno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="CustomerTable" Relationship="Self.FK__Reservation__Cid__164452B1" FromRole="Reservation" ToRole="CustomerTable" />
+    <NavigationProperty Name="TicketCancels" Relationship="Self.FK__TicketCan__ticke__182C9B23" FromRole="Reservation" ToRole="TicketCancel" />
+  </EntityType>
+  <EntityType Name="TicketCancel">
+    <Key>
+      <PropertyRef Name="Cid" />
+      <PropertyRef Name="ticketno" />
+      <PropertyRef Name="DepartureDate" />
+    </Key>
+    <Property Name="Cid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ticketno" Type="Int32" Nullable="false" />
+    <Property Name="DepartureDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="CustomerTable" Relationship="Self.FK__TicketCance__Cid__173876EA" FromRole="TicketCancel" ToRole="CustomerTable" />
+    <NavigationProperty Name="Reservation" Relationship="Self.FK__TicketCan__ticke__182C9B23" FromRole="TicketCancel" ToRole="Reservation" />
+  </EntityType>
+  <Association Name="FK__Reservation__Cid__164452B1">
+    <End Role="CustomerTable" Type="Self.CustomerTable" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CustomerTable">
+        <PropertyRef Name="Cid" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="Cid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TicketCance__Cid__173876EA">
+    <End Role="CustomerTable" Type="Self.CustomerTable" Multiplicity="1" />
+    <End Role="TicketCancel" Type="Self.TicketCancel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CustomerTable">
+        <PropertyRef Name="Cid" />
+      </Principal>
+      <Dependent Role="TicketCancel">
+        <PropertyRef Name="Cid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TicketCan__ticke__182C9B23">
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+    <End Role="TicketCancel" Type="Self.TicketCancel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reservation">
+        <PropertyRef Name="ticketno" />
+      </Principal>
+      <Dependent Role="TicketCancel">
+        <PropertyRef Name="ticketno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="projectflightEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CustomerTables" EntityType="Self.CustomerTable" />
+    <EntitySet Name="FlightTables" EntityType="Self.FlightTable" />
+    <EntitySet Name="Reservations" EntityType="Self.Reservation" />
+    <EntitySet Name="TicketCancels" EntityType="Self.TicketCancel" />
+    <AssociationSet Name="FK__Reservation__Cid__164452B1" Association="Self.FK__Reservation__Cid__164452B1">
+      <End Role="CustomerTable" EntitySet="CustomerTables" />
+      <End Role="Reservation" EntitySet="Reservations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TicketCance__Cid__173876EA" Association="Self.FK__TicketCance__Cid__173876EA">
+      <End Role="CustomerTable" EntitySet="CustomerTables" />
+      <End Role="TicketCancel" EntitySet="TicketCancels" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TicketCan__ticke__182C9B23" Association="Self.FK__TicketCan__ticke__182C9B23">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="TicketCancel" EntitySet="TicketCancels" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
