@@ -1,0 +1,37 @@
+.navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  .navbar-brand>img {
+    padding: 7px 14px;
+    width:'0.4px';
+    height:'0.6px';
+  }
+  .main-footer{
+    color:white;
+  background-color:black;
+  padding-top:3em;
+  position: relative;
+  width: 100%;
+}
+.card-body{
+    background-color: whitesmoke;
+    text-align: center;
+    color:fuchsia;
+}
+
+.card{
+    padding-top: 0px;
+    display: inline-flex;
+    background-color:darkslategrey;
+    transition: transform .2s;
+    margin: 33px;
+    margin-left: 43px;
+}
+#hpara{
+    margin-top:20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+  
+ 

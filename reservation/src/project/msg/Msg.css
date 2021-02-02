@@ -1,0 +1,79 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    
+}
+body{
+    background-color: white;
+}
+.container{
+     padding:"1px";
+    margin:100px auto;
+    width:700px;
+    height: 790px;
+    background-color: white;
+    
+}
+.container form{
+    width:500px;
+    height:400px;
+    padding: 10px;
+
+}
+.container label{
+    display:block;
+    letter-spacing: 0.1rem;
+    font-style: italic;
+    margin-bottom: 3px;
+}
+.container input,.container textarea {
+    width:100%;
+    margin:0 auto;
+    height:50px;
+    padding: 10px;
+    border: none;
+  
+   
+}
+
+
+.container input:focus, .container textarea:focus{
+   
+    box-shadow: 1px 1px 4px 1px rgb(49,170,240);
+
+
+}
+
+.singleItem{
+    margin:10px 0;
+}
+.msg{
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom:10px;
+    letter-spacing: 0.2rem;
+    font-style: italic;
+    width:250px;
+   
+    padding: 3px;
+    font-size:10px;
+    font-weight: bold;
+    color: rgb(5,110,5);
+    border-radius: 5px;
+}
+.msgApper{
+    display:block;
+}
+
+
+
+
+
+
+
+
+
+
+
+

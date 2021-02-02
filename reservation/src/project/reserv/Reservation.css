@@ -1,0 +1,42 @@
+.formDiv {    
+   
+    border-radius: 5px;    
+    background-color:white;
+    height: 750px;
+    width: 500px;
+    
+   
+   } 
+   /* body{
+     background-image:url("https://airbus-h.assetsadobe2.com/is/image/content/dam/corporate-topics/innovation/future-concepts/concept-plane/Airbus-Concept_plane-side_view_right.jpg?wid=1920&fit=fit,1&qlt=85,0") ;
+ } */
+  form{
+   margin-right: auto;
+     height: 400px;
+     width: 500px;
+  }
+      input[type=text]{
+        width:100%;
+
+      }
+       
+    input[type=submit] {    
+     /* width:200px;     */
+     background-color:blue;    
+     color: white;    
+     padding: 5px 5px;    
+     margin: 8px 0;    
+     border: none;    
+     border-radius: 4px;    
+     cursor: pointer;    
+   }  
+   
+     
+   input[type=submit]:hover {    
+     background-color:blue;    
+   }    
+   .showError{    
+     border-color: #a94442 !important;    
+     color: #a94442 !important;    
+     margin-bottom: 15px;    
+   }
